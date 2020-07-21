@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\User;
-use JWTAuth;
+
+
 
 class AuthController extends BaseController
 {
-    protected $guard = 'api';//设置使用guard为api选项验证
 
     public function __construct()
     {
@@ -56,11 +55,19 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
-        if ($token = $this->guard()->attempt($credentials)) {
-            return $this->respondWithToken($token);
-        }
-        return $this->response->array(['code' => 422, 'msg' => '账户密码错误', 'data' => ""]);
+        $http = new \GuzzleHttp\Client();
+        // 发送相关字段到后端应用获取授权令牌
+        $response = $http->post(route('passport.token'), [
+            'form_params' => [
+                'grant_type' => 'password',
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET'),
+                'username' => app('request')->input('email'),  // 这里传递的是邮箱
+                'password' => app('request')->input('password'), // 传递密码信息
+                'scope' => '*'
+            ],
+        ]);
+        return $this->response()->array(['code'=>200,'msg' => "登录成功", 'data' => $data]);
     }
 
     /**
@@ -70,7 +77,6 @@ class AuthController extends BaseController
      */
     public function me()
     {
-        //return response()->json($this->guard()->user());
         return $this->response->array($this->guard()->user());
     }
 
@@ -82,7 +88,6 @@ class AuthController extends BaseController
     public function logout()
     {
         $this->guard()->logout();
-
         return $this->response->array(['message' => '退出成功']);
     }
 
@@ -113,14 +118,5 @@ class AuthController extends BaseController
         ]);
     }
 
-    /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\Guard
-     */
-    public function guard()
-    {
-        return Auth::guard($this->guard);
-    }
 
 }
