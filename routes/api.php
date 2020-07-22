@@ -15,9 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1'], function ($api) {
-    $api->group(['prefix' => 'auth'], function ($api) {
-        $api->post('register', 'AuthController@register');
-        $api->get('info', 'AuthController@me');
-        $api->post('get_token','Authorizations@getAccessToken');
+    $api->group(['prefix' => 'user'], function ($api) {
+        $api->post('register', 'UserController@register');
+        $api->post('login', 'UserController@login');
+        $api->get('unauthorized', 'UserController@unauthorized');
+        $api->get('info', 'UserController@info');
+        $api->get('logout', 'UserController@logout');
+        $api->post('refreshtoken', 'UserController@refreshtoken');
     });
 });

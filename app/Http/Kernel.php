@@ -45,6 +45,18 @@ class Kernel extends HttpKernel
         ],
     ];
 
+
+    protected $middlewarePriority = [
+        \App\Http\Middleware\CheckForMaintenanceMode::class, #changed
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class
+    ];
+
     /**
      * The application's route middleware.
      *
@@ -64,5 +76,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,//注册jwt中间件
+        'CheckClientCredentials' => \App\Http\Middleware\CheckClientCredentials::class #changed
     ];
 }
