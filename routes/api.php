@@ -13,14 +13,19 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-$api = app('Dingo\Api\Routing\Router');
-$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1'], function ($api) {
-    $api->group(['prefix' => 'user'], function ($api) {
-        $api->post('register', 'UserController@register');
-        $api->post('login', 'UserController@login');
-        $api->get('unauthorized', 'UserController@unauthorized');
-        $api->get('info', 'UserController@info');
-        $api->get('logout', 'UserController@logout');
-        $api->post('refreshtoken', 'UserController@refreshtoken');
+Route::middleware('api')->namespace('Api')->group(function (){
+    Route::post('mp/token', 'ApiController@login');
+    Route::post('refresh', 'ApiController@refresh');
+
+    Route::group(['middleware' => 'auth.jwt'], function () {
+        Route::get('logout', 'ApiController@logout');
+        Route::get('user', 'ApiController@getAuthUser');
     });
+    Route::middleware('refresh.token')->group(function($router) {
+        $router->get('profile','UserController@profile');
+    });
+
+    //公众号接口
+    Route::get('wehcat', 'WechatController@wehcat');
 });
+
