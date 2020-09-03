@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware('api')->namespace('Api')->group(function (){
-    Route::post('mp/token', 'ApiController@login');
+    Route::post('login', 'ApiController@login');
     Route::post('refresh', 'ApiController@refresh');
 
     Route::group(['middleware' => 'auth.jwt'], function () {
@@ -24,7 +24,6 @@ Route::middleware('api')->namespace('Api')->group(function (){
     Route::middleware('refresh.token')->group(function($router) {
         $router->get('profile','UserController@profile');
     });
-
     //公众号接口
     Route::get('wehcat', 'WechatController@wehcat');
 });

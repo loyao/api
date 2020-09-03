@@ -19,7 +19,7 @@ class ApiController extends BaseController
     }*/
     public function login(Request $request)
     {
-        $token = null;
+        return 1;
         if ($request->openid == 1) {
             $arr['mobile'] = 18180414607;
             $arr['password'] = 123456;
@@ -58,6 +58,10 @@ class ApiController extends BaseController
             'success' => "",
             'data' => $data,
         ], 200);
+    }
+
+    public function create(){
+
     }
 
 }
