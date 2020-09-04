@@ -2,66 +2,77 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\AdminUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Transformers\UserTransformer;
 use App\Model\UserAuth;
-use  App\User;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiController extends BaseController
 {
 
-   /* public function __construct()
+    public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['login','refresh']]);
+        $this->middleware('jwt.auth', ['except' => ['login']]);
         // 另外关于上面的中间件，官方文档写的是『auth:api』
         // 但是我推荐用 『jwt.auth』，效果是一样的，但是有更加丰富的报错信息返回
-    }*/
+    }
     public function login(Request $request)
     {
-        return 1;
-        if ($request->openid == 1) {
-            $arr['mobile'] = 18180414607;
-            $arr['password'] = 123456;
-            $token = auth('api')->attempt($arr);
-            $data['token'] = $token;
-            $data['expires_in'] = auth('api')->factory()->getTTL() * 60;
+        $input = $request->only('username', 'password');
+        $jwt_token = null;
+        if (!$jwt_token = JWTAuth::attempt($input)) {
             return response()->json([
-                'success' => "",
-                'data' => $data,
-            ], 200);
+                'success' => false,
+                'message' => '用户名或密码错误！',
+            ], 401);
         }
+       return  $this->respondWithToken($jwt_token);
+    }
 
-        $wechatApp = $this->easyWechatGetSession();
-        $wehcatInfo = $wechatApp->auth->session($request->code);
-        if (!$request->openid && empty($wehcatInfo['openid'])) {
-            if (isset($wehcatInfo) && !empty($wehcatInfo['errmsg'])) {
-                return response()->json([
-                    'data' => "",
-                    'message' => $wehcatInfo['errmsg'],
-                ], 406);
-            } else {
-                return response()->json([
-                    'data' => "",
-                    'message' => '用户openid没有获取到',
-                ], 401);
-            }
-        }
-        $userOauth = UserAuth::where('oauth_id', $wehcatInfo['openid'])->first();
-        if (!$userOauth) {
-            $user = new User();
-            $user->name = "小程序用户#" . date('yd') . mt_rand(1000, 9999);
-            $oauth = new UserAuth();
-        }
-        $data['token'] = $token;
+    public function me()
+    {
+        $user = JWTAuth::parseToken()->touser();
+        $data['username'] = $user->username;
+        $data['name'] = $user->name;
+        $data['avatar'] = $user->avatar;
         return response()->json([
-            'success' => "",
             'data' => $data,
+            'message' => 'OK',
         ], 200);
+    }
+
+    public function logout()
+    {
+        JWTAuth::parseToken()->invalidate();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+    /**
+     * 刷新jwt
+     * @return \Illuminate\Http\JsonResponse
+     * Created by zhaoluyao@jangene.com
+     * Date:2020/9/4 16:22
+     */
+    public function refresh(){
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     public function create(){
 
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'code'=>200,
+            'message'=>"OK",
+            'data'=>[
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth('api')->factory()->getTTL() * 60
+            ],
+        ]);
     }
 
 }

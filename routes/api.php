@@ -13,16 +13,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware('api')->namespace('Api')->group(function (){
+Route::middleware('api')->namespace('Api')->group(function () {
     Route::post('login', 'ApiController@login');
     Route::post('refresh', 'ApiController@refresh');
+    Route::get('logout', 'ApiController@logout');
+    Route::get('user', 'ApiController@me');
 
-    Route::group(['middleware' => 'auth.jwt'], function () {
-        Route::get('logout', 'ApiController@logout');
-        Route::get('user', 'ApiController@getAuthUser');
-    });
-    Route::middleware('refresh.token')->group(function($router) {
-        $router->get('profile','UserController@profile');
+    Route::middleware('refresh.token')->group(function ($router) {
+        $router->get('profile', 'UserController@profile');
     });
     //公众号接口
     Route::get('wehcat', 'WechatController@wehcat');

@@ -2266,16 +2266,16 @@
         },
         {
             "name": "overtrue/wechat",
-            "version": "5.0.4",
+            "version": "5.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/wechat.git",
-                "reference": "f33465558127315edfe129485955b77c8d541abd"
+                "reference": "0a1efb6cb8bc95d56d241a480ff3a1f2ea7856d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/overtrue/wechat/zipball/f33465558127315edfe129485955b77c8d541abd",
-                "reference": "f33465558127315edfe129485955b77c8d541abd",
+                "url": "https://api.github.com/repos/overtrue/wechat/zipball/0a1efb6cb8bc95d56d241a480ff3a1f2ea7856d7",
+                "reference": "0a1efb6cb8bc95d56d241a480ff3a1f2ea7856d7",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2302,6 +2302,7 @@
             },
             "require-dev": {
                 "brainmaestro/composer-git-hooks": "^2.7",
+                "dms/phpunit-arraysubset-asserts": "^0.2.0",
                 "friendsofphp/php-cs-fixer": "^2.15",
                 "mikey179/vfsstream": "^1.6",
                 "mockery/mockery": "^1.2.3",
@@ -2359,7 +2360,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-08-17T07:16:40+00:00"
+            "time": "2020-09-03T07:24:58+00:00"
         },
         {
             "name": "paragonie/random_compat",
