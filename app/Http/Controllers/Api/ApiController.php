@@ -14,7 +14,7 @@ class ApiController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['login']]);
+        $this->middleware('jwt.auth', ['except' => ['login','test']]);
         // 另外关于上面的中间件，官方文档写的是『auth:api』
         // 但是我推荐用 『jwt.auth』，效果是一样的，但是有更加丰富的报错信息返回
     }
@@ -60,6 +60,10 @@ class ApiController extends BaseController
 
     public function create(){
 
+    }
+
+    public function test(){
+        return bcrypt("admin123456");
     }
 
     protected function respondWithToken($token)
