@@ -3,7 +3,6 @@
 namespace App\Models;
 
 
-use Dcat\Admin\Traits\HasDateTimeFormatter;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +10,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class AdminUser extends Authenticatable implements JWTSubject
 {
     use  Notifiable;
-    use HasDateTimeFormatter;
     protected $table = 'admin_users';
 
     protected $fillable = [
@@ -32,5 +30,14 @@ class AdminUser extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function role(){
+        return $this->belongsToMany (
+            'App\Model\AdminRole',
+            'admin_role_users',
+            'user_id',
+            'role_id'
+        );
     }
 }

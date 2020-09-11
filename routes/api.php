@@ -18,7 +18,7 @@ Route::middleware(['api'])->namespace('Api')->group(function () {
     Route::get('test', 'ApiController@test');
     Route::post('refresh', 'ApiController@refresh');
     Route::get('logout', 'ApiController@logout');
-    Route::get('user', 'ApiController@me');
+    Route::get('user/info', 'ApiController@me');
 
     Route::middleware('refresh.token')->group(function ($router) {
         $router->get('profile', 'UserController@profile');

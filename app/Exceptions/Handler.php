@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,13 +52,20 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         // 参数验证错误的异常，我们需要返回 400 的 http code 和一句错误信息
-        if ($exception instanceof ValidationException) {
-            return response(['error' => array_first(array_collapse($exception->errors()))], 400);
+       /* if ($exception instanceof ValidationException) {
+            return response()->json([
+                'success' => false,
+                'message' =>array_first(array_collapse($exception->errors())),
+            ], 401);
+        }*/
+
+
+        if ($exception instanceof Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+            return response()->json(['token_expired'], $exception->getStatusCode());
+        } else if ($exception instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+            return response()->json(['token_invalid'], $exception->getStatusCode());
         }
-        // 用户认证的异常，我们需要返回 401 的 http code 和错误信息
-        if ($exception instanceof UnauthorizedHttpException) {
-            return response($exception->getMessage(), 401);
-        }
+
         return parent::render($request, $exception);
     }
 }

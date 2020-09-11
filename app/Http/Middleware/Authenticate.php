@@ -14,7 +14,9 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if ( $request->expectsJson()) {
+            return error('token 已失效，请重新登录', 401);
+        }else{
             return route('login');
         }
     }

@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Transformers\UserTransformer;
 use App\Model\UserAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ApiController extends BaseController
 {
 
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('jwt.auth', ['except' => ['login','test']]);
         // 另外关于上面的中间件，官方文档写的是『auth:api』
         // 但是我推荐用 『jwt.auth』，效果是一样的，但是有更加丰富的报错信息返回
@@ -34,6 +34,8 @@ class ApiController extends BaseController
     public function me()
     {
         $user = JWTAuth::parseToken()->touser();
+        $user = AdminUser::find($user->id);
+        return $user->role;
         $data['username'] = $user->username;
         $data['name'] = $user->name;
         $data['avatar'] = $user->avatar;
