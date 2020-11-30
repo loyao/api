@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\AdminRoleUser;
 use App\Models\AdminUser;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -13,10 +14,9 @@ class ApiController extends BaseController
 
     public function __construct()
     {
-        parent::__construct();
         $this->middleware('jwt.auth', ['except' => ['login','test']]);
+        //$user = JWTAuth::parseToken()->touser();
         // 另外关于上面的中间件，官方文档写的是『auth:api』
-        // 但是我推荐用 『jwt.auth』，效果是一样的，但是有更加丰富的报错信息返回
     }
     public function login(Request $request)
     {
@@ -35,10 +35,11 @@ class ApiController extends BaseController
     {
         $user = JWTAuth::parseToken()->touser();
         $user = AdminUser::find($user->id);
-        return $user->role;
+        $role_user = AdminRoleUser::where('user_id',$user->id)->first();
         $data['username'] = $user->username;
         $data['name'] = $user->name;
         $data['avatar'] = $user->avatar;
+        $data['role'] = $role_user->name;
         return response()->json([
             'data' => $data,
             'message' => 'OK',

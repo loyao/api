@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class AdminRoleUser extends Model
 {
-	use HasDateTimeFormatter;
+
     protected $table = 'admin_role_users';
-    
+
+
+    public function role(){
+        return $this->hasOne('App\Models\AdminRole','id','role_id');
+    }
 }
