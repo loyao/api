@@ -14,7 +14,7 @@ class ApiController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['login','test']]);
+        $this->middleware('jwt.auth', ['except' => ['login','test','create']]);
         //$user = JWTAuth::parseToken()->touser();
         // 另外关于上面的中间件，官方文档写的是『auth:api』
     }
@@ -61,8 +61,18 @@ class ApiController extends BaseController
         return $this->respondWithToken(auth('api')->refresh());
     }
 
-    public function create(){
-
+    public function create(Request $request){
+        $input = $request->only('username', 'password');
+        $user = new AdminUser();
+        $user->username = $input['username'];
+        $user->password = bcrypt($input['password']);
+        $user->save();
+        $data['username'] = $user->username;
+        $data['name'] = $user->name;
+        return response()->json([
+            'data' => $data,
+            'message' => 'OK',
+        ], 200);
     }
 
     public function test(){
