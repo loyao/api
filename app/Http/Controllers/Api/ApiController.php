@@ -75,9 +75,9 @@ class ApiController extends BaseController
         ], 200);
     }
 
-    public function test(){
+    /*public function test(){
         return bcrypt("admin123456");
-    }
+    }*/
 
     protected function respondWithToken($token)
     {
