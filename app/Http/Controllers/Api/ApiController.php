@@ -6,8 +6,7 @@ use App\Models\AdminRoleUser;
 use App\Models\AdminUser;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Transformers\UserTransformer;
-use App\Model\UserAuth;
+use Illuminate\Support\Facades\Auth;
 
 class ApiController extends BaseController
 {
@@ -22,11 +21,13 @@ class ApiController extends BaseController
     {
         $input = $request->only('username', 'password');
         $jwt_token = null;
+
         if (!$jwt_token = JWTAuth::attempt($input)) {
             return response()->json([
                 'success' => false,
                 'message' => '用户名或密码错误！',
-            ], 401);
+                'code' =>401,
+            ]);
         }
        return  $this->respondWithToken($jwt_token);
     }
@@ -76,7 +77,7 @@ class ApiController extends BaseController
     }
 
     /*public function test(){
-        return bcrypt("admin123456");
+        return bcrypt("123456");
     }*/
 
     protected function respondWithToken($token)
