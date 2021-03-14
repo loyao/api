@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "ext-openssl": "*",
         "barryvdh/laravel-cors": "^2.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
@@ -16,6 +17,7 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "overtrue/wechat": "^5.0",
+        "predis/predis": "^1.1",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
@@ -42,6 +44,9 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/helper.php"
         ]
     },
     "autoload-dev": {

@@ -23,6 +23,11 @@ Route::middleware(['api'])->namespace('Api')->group(function () {
     Route::get('system/menu', 'SystemController@menu');
     Route::get('system/test', 'SystemController@test');
     Route::get('user/userList', 'UserController@userList');
+    Route::post('user/changeUserStatus', 'UserController@changeUserStatus');
+    Route::post('user/addUser', 'UserController@addUser');
+    Route::get('user/userInfo', 'UserController@userInfo');
+    Route::post('user/editUser', 'UserController@editUser');
+    Route::delete('user/deleteUser', 'UserController@deleteUser');
 
     Route::middleware('refresh.token')->group(function ($router) {
         $router->get('profile', 'UserController@profile');

@@ -18,8 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('mobile')->nullable();
             $table->string('password')->nullable();
+            $table->string('email')->comment('邮箱');
+            $table->string('avatar')->nullable();
+            $table->tinyInteger('status')->default(1)->comment('状态，1正常，0禁止,-1删除');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
