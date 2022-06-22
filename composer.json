@@ -1,6 +1,6 @@
 {
     "name": "laravel/laravel",
-    "type": "project",
+    "type": "mau",
     "description": "The Laravel Framework.",
     "keywords": [
         "framework",
@@ -13,7 +13,7 @@
         "barryvdh/laravel-cors": "^2.0.4",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.4",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": "^6.5.8",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.6.1",
         "medz/cors": "^1.5.0",
