@@ -10,15 +10,15 @@
     "require": {
         "php": "^7.2.5",
         "ext-openssl": "*",
-        "barryvdh/laravel-cors": "^2.0",
-        "fideloper/proxy": "^4.2",
-        "fruitcake/laravel-cors": "^2.0",
+        "barryvdh/laravel-cors": "^2.0.4",
+        "fideloper/proxy": "^4.4.1",
+        "fruitcake/laravel-cors": "^2.0.4",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
-        "laravel/tinker": "^2.0",
-        "medz/cors": "^1.5",
-        "overtrue/wechat": "^5.0",
-        "predis/predis": "^1.1",
+        "laravel/tinker": "^2.6.1",
+        "medz/cors": "^1.5.0",
+        "overtrue/wechat": "^5.5.3",
+        "predis/predis": "^1.1.7",
         "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
